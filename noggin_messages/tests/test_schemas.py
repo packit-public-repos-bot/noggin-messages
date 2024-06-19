@@ -102,7 +102,8 @@ class TestSchema:
         )
         assert msg.groups == ["developers"]
         assert (
-            msg.summary == "User dudemcpants removed user testuser from the groupdevelopers"
+            msg.summary
+            == "User dudemcpants removed user testuser from the groupdevelopers"
         )
         assert str(msg) == msg.summary
 
@@ -219,7 +220,7 @@ class TestSchema:
         assert str(msg) == (
             "dudemcpants edited 3 details of testuser's Fedora Account\n"
             "\n"
-            "Details changed:\n"
+            "Details changed: \n"
             "\n"
             "firstname\n"
             "lastname\n"
@@ -252,7 +253,7 @@ class TestSchema:
         assert str(msg2) == (
             "dudemcpants edited 2 details of their Fedora Account\n"
             "\n"
-            "Details changed:\n"
+            "Details changed: \n"
             "\n"
             "firstname\n"
             "lastname "

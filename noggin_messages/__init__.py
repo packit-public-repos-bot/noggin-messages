@@ -239,7 +239,7 @@ class UserUpdateV1(NogginMessage):
         new_line = "\n"
         return (
             f"{self.summary}\n\n"
-            f"Details changed:\n\n"
+            f"Details changed: \n\n"
             f"{new_line.join([item for item in self.body['msg']['fields']])} "
         )
 
