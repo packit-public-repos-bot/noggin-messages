@@ -106,6 +106,57 @@ class MemberSponsorV1(NogginMessage):
     }
 
 
+class MemberRemovedV1(NogginMessage):
+    """The message is sent when a user is removed from a group."""
+
+    @property
+    def groups(self):
+        """
+        List of groups affected by the action that generated this message.
+
+        Returns:
+            A list of affected groups.
+        """
+        return [self.body["msg"]["group"]]
+
+    @property
+    def summary(self):
+        """
+        Return a short, human-readable representation of this message.
+
+        This should provide a short summary of the message, much like the subject line
+        of an email.
+
+        Returns:
+            A summary for this message.
+        """
+        return (
+            f"User {self.agent_name} removed user {self.user_name} from the group"
+            f"{self.groups[0]}"
+        )
+
+    topic = "fas.group.member.removed"
+    body_schema = {
+        "id": "http://fedoraproject.org/message-schema/noggin",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "description": "The message sent when a user is removed from a group",
+        "type": "object",
+        "required": ["msg"],
+        "properties": {
+            "msg": {
+                "required": ["agent", "user", "group"],
+                "description": "the contents of the event",
+                "type": "object",
+                "properties": {
+                    "agent": {"type": "string"},
+                    "user": {"type": "string"},
+                    "group": {"type": "string"},
+                },
+            }
+        },
+    }
+
+
 class UserCreateV1(NogginMessage):
     """The message sent when a user is created"""
 

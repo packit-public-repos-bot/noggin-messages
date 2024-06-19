@@ -1,4 +1,4 @@
-from noggin_messages import MemberSponsorV1, UserCreateV1, UserUpdateV1
+from noggin_messages import MemberSponsorV1, MemberRemovedV1, UserCreateV1, UserUpdateV1
 from fedora_messaging import message
 import json
 
@@ -60,6 +60,61 @@ class TestSchema:
             == "noggin.group.member.sponsor.v1"
         )
         assert msg_dump["topic"] == "fas.group.member.sponsor"
+
+    def test_member_removed_v1(self):
+        """
+        Test MemberRemovedV1
+
+        The expected message here is:
+
+        {
+        "body": {
+            "msg": {
+            "agent": "dudemcpants",
+            "group": "developers",
+            "user": "testuser"
+            }
+        },
+        "headers": {
+            "fedora_messaging_schema": "noggin.group.member.removed.v1",
+            "fedora_messaging_severity": 20,
+            "sent-at": "2020-03-02T08:53:38+00:00"
+        },
+        "id": "c795df0d-3a95-47a9-85c4-7fabf3129ddf",
+        "queue": null,
+        "topic": "fas.group.member.removed"
+        }
+
+        """
+
+        msg = MemberRemovedV1(
+            {"msg": {"agent": "dudemcpants", "user": "testuser", "group": "developers"}}
+        )
+        msg.validate()
+
+        assert msg.app_name == "FAS"
+        assert msg.agent_name == "dudemcpants"
+        assert msg.usernames == ["dudemcpants", "testuser"]
+        assert msg.agent_avatar == (
+            "https://seccdn.libravatar.org/avatar/caa750e"
+            "df4a11206831a58713cf9231b5b3227765887cbc765d4"
+            "f8c5c55576a5?s=64&d=retro"
+        )
+        assert msg.groups == ["developers"]
+        assert (
+            msg.summary == "User dudemcpants removed user testuser from the groupdevelopers"
+        )
+        assert str(msg) == msg.summary
+
+        msg_dump = json.loads(message.dumps(msg))
+        assert msg_dump["body"]["msg"]["agent"] == "dudemcpants"
+        assert msg_dump["body"]["msg"]["user"] == "testuser"
+        assert msg_dump["body"]["msg"]["group"] == "developers"
+        assert (
+            msg_dump["headers"]["fedora_messaging_schema"]
+            == "noggin.group.member.removed.v1"
+        )
+        assert msg_dump["topic"] == "fas.group.member.removed"
 
     def test_user_create_v1(self):
         """
