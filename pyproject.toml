@@ -9,11 +9,9 @@ authors = [
   "Fedora Infrastructure <admin@fedoraproject.org>"
 ]
 
-# readme = 'README.md'  # Markdown files are supported
-
+readme = "README.md"
 repository = "https://github.com/fedora-infra/noggin-messages"
 homepage = "https://github.com/fedora-infra/noggin-messages"
-
 keywords = ['security']
 
 include = [
